@@ -3,6 +3,7 @@ package apiserver
 import (
 	"github.com/stupside/castor/internal/transport"
 	"github.com/stupside/castor/services/apiserver/internal/device"
+	"github.com/stupside/castor/services/apiserver/internal/device/androidtv"
 	"github.com/stupside/castor/services/apiserver/internal/device/chromecast"
 	"github.com/stupside/castor/services/apiserver/internal/device/dlna"
 	"github.com/stupside/castor/services/apiserver/internal/device/roku"
@@ -14,7 +15,7 @@ import (
 func (c *Config) backend(media transport.Endpoint, scraping transport.Endpoint) Backend {
 	return Backend{
 		Devices: device.Registry{
-			Families: []device.Family{dlna.Family{}, chromecast.Family{}, roku.Family{Config: c.Devices.Roku}},
+			Families: []device.Family{dlna.Family{}, chromecast.Family{}, roku.Family{Config: c.Devices.Roku}, androidtv.Family{}},
 			Timeout:  c.Network.Timeout,
 		},
 		Media:    mediaclient.New(media.Client(), media.URL),
