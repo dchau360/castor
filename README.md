@@ -51,7 +51,7 @@ Save `config.yaml` in your working directory:
 ```yaml
 device:
   name: "Living Room TV"   # exact name from `castor scan`
-  type: dlna               # or: chromecast, roku
+  type: dlna               # or: chromecast, roku, androidtv
 ```
 
 Cast a page:
@@ -200,6 +200,9 @@ Page casts go API → scraping → media; direct streams bypass scraping. Media 
 | **DLNA / UPnP** (`MediaRenderer:1`) | Most smart TVs, and players like Kodi, VLC, and Plex | Tested on Samsung |
 | **Chromecast** | Google Cast devices | Experimental, not yet tried on real hardware |
 | **Roku** | Roku TVs and players, through a sideloaded channel | Experimental, not yet tried on real hardware |
+| **Android TV** (ADB) | Android TV and Google TV boxes and sets, Fire TV sticks and cubes, through an installed player app | Tested on a Xiaomi Mi Box 4 (Android 9) |
+
+Samsung (Tizen) TVs play over DLNA: approve castor in the TV's *Device Connection Manager* prompt the first time it connects.
 
 ### Roku setup
 
@@ -215,6 +218,18 @@ Castor sideloads a playback channel:
 3. **Cast.** Castor sideloads its channel automatically; later casts reuse it.
 
 For a published channel, set `devices.roku.app_id` instead; no developer mode/password needed. Relayed Roku playback runs about 30 s behind.
+
+### Android TV and Fire TV setup
+
+Castor installs a small player app over ADB and drives it from there:
+
+1. **Turn on ADB debugging** (once, by hand):
+   - **Android TV / Google TV:** *Settings → Device Preferences → About*, select **Build** seven times, then turn on **USB debugging** in *Developer options*. Some models list a separate **Network debugging** switch; turn it on too.
+   - **Fire TV:** *Settings → My Fire TV → About*, select the device name seven times to unlock *Developer Options*, then turn on **ADB Debugging**.
+2. **Cast.** `castor scan` lists the TV as `androidtv` once ADB debugging is on; or pin it with `type: androidtv` (`firetv` also works) and `host: <its LAN IP>`.
+3. **Allow castor on the TV** the first time: tick **Always allow from this computer** and choose **OK**. Castor then installs its player and reuses it on later casts.
+
+Castor keeps its ADB key in your cache directory (`castor/adbkey`); deleting it means allowing castor again.
 
 ## Troubleshooting
 

@@ -16,7 +16,7 @@ endif
 
 .DEFAULT_GOAL := build
 
-.PHONY: build lib env clean hooks generate
+.PHONY: build lib env clean hooks generate androidtv-apk
 
 # eval "$(make env)" once per shell, then plain `go run ./cmd/castor` / `go build` work.
 env:
@@ -37,6 +37,10 @@ clean:
 # Regenerate gen/ from proto/; buf runs the protoc plugins pinned as go tools.
 generate:
 	buf generate
+
+# Rebuild the committed Android TV player; needs ANDROID_HOME and a JDK 17+. Bump its VERSION with any change.
+androidtv-apk:
+	services/apiserver/internal/device/androidtv/receiver/build.sh
 
 # Enable the Conventional Commits commit-msg hook (git + bash only, no installs).
 hooks:

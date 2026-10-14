@@ -36,3 +36,16 @@ func TestDiscoveredDeviceIsMatchedByEnumAndName(t *testing.T) {
 		t.Errorf("Target = %v, want dlna:right", got)
 	}
 }
+
+func TestFireTVNamesTheAndroidTVFamily(t *testing.T) {
+	got, err := Target(t.Context(), nil, Device{Name: "Living Room", Type: "firetv", Host: "10.0.0.9"})
+	if err != nil {
+		t.Fatal(err)
+	}
+	if kind := got.GetPinned().GetType(); kind != castorv1.DeviceType_DEVICE_TYPE_ANDROIDTV {
+		t.Fatalf("firetv pinned as %v", kind)
+	}
+	if name := DeviceTypeName(castorv1.DeviceType_DEVICE_TYPE_ANDROIDTV); name != "androidtv" {
+		t.Fatalf("scan names it %q", name)
+	}
+}

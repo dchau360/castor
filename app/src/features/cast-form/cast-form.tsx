@@ -16,6 +16,7 @@ const deviceTypes: Record<DeviceType, string> = {
   [DeviceType.DLNA]: "DLNA",
   [DeviceType.CHROMECAST]: "Chromecast",
   [DeviceType.ROKU]: "Roku",
+  [DeviceType.ANDROIDTV]: "Android TV",
 };
 
 export function CastForm({ devices, devicesError, casts }: { devices: Device[]; devicesError?: string; casts: React.ReactNode }) {

@@ -45,9 +45,16 @@ var deviceTypes = map[string]castorv1.DeviceType{
 	"dlna":       castorv1.DeviceType_DEVICE_TYPE_DLNA,
 	"chromecast": castorv1.DeviceType_DEVICE_TYPE_CHROMECAST,
 	"roku":       castorv1.DeviceType_DEVICE_TYPE_ROKU,
+	"androidtv":  castorv1.DeviceType_DEVICE_TYPE_ANDROIDTV,
 }
 
+// deviceTypeAliases are other names configuration accepts; scan only ever prints the names above.
+var deviceTypeAliases = map[string]string{"firetv": "androidtv"}
+
 func configuredDeviceType(name string) (castorv1.DeviceType, error) {
+	if canonical, ok := deviceTypeAliases[name]; ok {
+		name = canonical
+	}
 	kind, ok := deviceTypes[name]
 	if !ok {
 		return castorv1.DeviceType_DEVICE_TYPE_UNSPECIFIED, fmt.Errorf("unknown device type: %q", name)
